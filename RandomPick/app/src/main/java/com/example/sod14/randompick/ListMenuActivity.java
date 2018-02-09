@@ -1,8 +1,10 @@
 package com.example.sod14.randompick;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,10 +18,11 @@ import com.example.sod14.randompick.MainActivityElements.MainListItem;
 import com.example.sod14.randompick.MainActivityElements.MainListItemsAdapter;
 import com.example.sod14.randompick.Persistence.ActiveData;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class ListMenuActivity extends AppCompatActivity {
+
+
     private ActiveData activeData;
     private ElementListManager manager;
     private MainListItemsAdapter adapter;
@@ -29,11 +32,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_list_menu);
 
-        //Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        //setSupportActionBar(myToolbar);
+        //Add the toolbar always after the setcontentview method
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarListMenu);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        setContentView(R.layout.activity_main);
         activeData = ActiveData.getInstance();
         activeData.setMainActivity(this);
         manager = activeData.getManager();
@@ -50,11 +55,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged(); //revisar
+
+        mainListItems = activeData.getMainListItems();
+        adapter = activeData.getMainListItemsAdapter();
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        loadData();
+
     }
 
     private void loadData()
     {
+        mainListItems.clear();
         List<ElementList<String>> lists = this.manager.getLists();
         MainListItem item;
         for(ElementList<String> e:lists)
@@ -90,16 +105,6 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.main_activity_menu, menu);
         return true;
     }
-
-    //For testing
-    public void OnClick(View v)
-    {
-        ElementList<String> list = new ElementList<>();
-        list.setName("list1");
-        list.getElements().add("el1");
-        manager.addList(list);
-    }
-
 
 
 

@@ -1,14 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Random Pick</string>
-    <string name="title_activity_list">ListActivity</string>
-    <string name="title_activity_list_menu">ListMenuActivity</string>
-    <string name="title_activity_random" translatable="false">RandomActivity</string>
-    <string name="title_activity_new_list">NewListActivity</string>
+    <string name="title_activity_new_list">New list</string>
+    <string name="title_activity_list_menu">List</string>
+    <string name="title_activity_list">Random Pick</string>
     <string name="confirmation_dialog">Are you sure?</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="no_elements">No elements</string>
     <string name="element">element</string>
     <string name="elements">elements</string>
-
 </resources>

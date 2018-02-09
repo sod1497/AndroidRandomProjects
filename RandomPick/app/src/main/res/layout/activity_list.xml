@@ -8,11 +8,11 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="111dp"
+        android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbarListActivity"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -22,29 +22,36 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+            <LinearLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:layout_width="0px"
+                android:layout_height="0px"/>
+
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/etElement"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_weight="1"
                 android:ems="10"
-                android:hint="Escribe aquí"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/buttonAdd"
+                android:hint="Nuevo elemento"
+                android:inputType="text"
+                app:layout_constraintEnd_toStartOf="@+id/button2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/buttonAdd"
+                android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
+                android:onClick="addButtonClick"
                 android:text="Añadir"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -53,7 +60,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_list" />
+    <include layout="@layout/content_activity_list" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -61,8 +68,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"
+        android:onClick="randomButtonClick"
         android:tint="@android:color/white"
-        app:rippleColor="@android:color/background_light"
-        app:srcCompat="@drawable/ic_swap_calls_black_24dp" />
+        app:srcCompat="@drawable/ic_casino_black_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>

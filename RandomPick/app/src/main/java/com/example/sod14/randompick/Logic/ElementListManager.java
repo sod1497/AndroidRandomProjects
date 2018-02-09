@@ -55,6 +55,10 @@ public class ElementListManager {
 
     }
 
+    public List<ElementList<String>> getLists() {
+        return lists;
+    }
+
     public boolean addList(ElementList<String> list) {
         //Adds a list if it doesn't exist yet
         String [] files = context.fileList();
@@ -91,6 +95,13 @@ public class ElementListManager {
             closeResource(fos);
             closeResource(oos);
         }
+    }
+
+    public boolean deleteList(ElementList<String> list)
+    {
+        boolean done = context.deleteFile(list.getName());
+        if(done) this.lists.remove(list);
+        return done;
     }
 
     public boolean saveAllLists() {

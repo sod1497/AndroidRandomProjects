@@ -4,6 +4,11 @@ import android.content.Context;
 
 import com.example.sod14.randompick.Logic.ElementList;
 import com.example.sod14.randompick.Logic.ElementListManager;
+import com.example.sod14.randompick.MainActivityElements.MainListItem;
+import com.example.sod14.randompick.MainActivityElements.MainListItemsAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sod14 on 31/01/2018.
@@ -12,10 +17,13 @@ import com.example.sod14.randompick.Logic.ElementListManager;
 public class ActiveData {
     private static ActiveData instance;
 
-    private Context MainActivity;
-    private Context ListActivity;
-    private Context RandomActivity;
+    private Context mainActivity;
+    private Context listActivity;
+    private Context randomActivity;
     private ElementListManager manager;
+
+    private MainListItemsAdapter mainListItemsAdapter;
+    private List<MainListItem> mainListItems;
 
     private ActiveData()
     {
@@ -29,34 +37,55 @@ public class ActiveData {
     }
 
     public Context getMainActivity() {
-        return MainActivity;
+        return mainActivity;
     }
 
     public void setMainActivity(Context mainActivity) {
-        MainActivity = mainActivity;
+        this.mainActivity = mainActivity;
     }
 
     public Context getListActivity() {
-        return ListActivity;
+        return listActivity;
     }
 
     public void setListActivity(Context listActivity) {
-        ListActivity = listActivity;
+        this.listActivity = listActivity;
     }
 
     public Context getRandomActivity() {
-        return RandomActivity;
+        return randomActivity;
     }
 
     public void setRandomActivity(Context randomActivity) {
-        RandomActivity = randomActivity;
+        this.randomActivity = randomActivity;
     }
 
     public ElementListManager getManager() {
+        if(manager==null){
+            manager = new ElementListManager(this.mainActivity);
+        }
         return manager;
     }
 
     public void setManager(ElementListManager manager) {
         this.manager = manager;
+    }
+
+    public MainListItemsAdapter getMainListItemsAdapter() {
+        if(mainListItemsAdapter==null) mainListItemsAdapter = new MainListItemsAdapter(mainListItems);
+        return mainListItemsAdapter;
+    }
+
+    public void setMainListItemsAdapter(MainListItemsAdapter mainListItemsAdapter) {
+        this.mainListItemsAdapter = mainListItemsAdapter;
+    }
+
+    public List<MainListItem> getMainListItems() {
+        if(mainListItems==null) mainListItems = new ArrayList<>();
+        return mainListItems;
+    }
+
+    public void setMainListItems(List<MainListItem> mainListItems) {
+        this.mainListItems = mainListItems;
     }
 }

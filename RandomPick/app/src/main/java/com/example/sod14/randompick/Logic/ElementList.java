@@ -10,7 +10,9 @@ import java.util.List;
 
 public class ElementList<String> implements Serializable {
     private List<String> elements;
+    private String description;
     private String name;
+    private int color;
 
     public ElementList() {
         elements = new ArrayList<>();
@@ -30,5 +32,21 @@ public class ElementList<String> implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }
