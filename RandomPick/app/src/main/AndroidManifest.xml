@@ -13,11 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        </activity>
-        <activity
             android:name=".RandomActivity"
             android:label="@string/title_activity_random"
             android:parentActivityName=".ListActivity" />
@@ -27,7 +22,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".AddListActivity"
-            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.ToolBarWhite"
             android:label="@string/title_activity_new_list"/>
         <activity
             android:name=".ListMenuActivity"

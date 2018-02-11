@@ -32,6 +32,9 @@ public class AddListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_list);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         etName = findViewById(R.id.etName);
         etDescription = findViewById(R.id.etDescription);
         imageView = findViewById(R.id.imageView);
@@ -84,6 +87,12 @@ public class AddListActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     public void bEditClic(View view) {

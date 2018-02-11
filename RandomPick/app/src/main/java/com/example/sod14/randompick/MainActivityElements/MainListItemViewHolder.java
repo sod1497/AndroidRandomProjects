@@ -1,20 +1,16 @@
 package com.example.sod14.randompick.MainActivityElements;
 
-import android.content.Intent;
+
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.sod14.randompick.ListActivity;
 import com.example.sod14.randompick.ListMenuActivity;
-import com.example.sod14.randompick.Logic.ElementList;
-import com.example.sod14.randompick.MainActivity;
 import com.example.sod14.randompick.Persistence.ActiveData;
 import com.example.sod14.randompick.R;
 
-import java.util.List;
 
 /**
  * Created by sod14 on 31/01/2018.
