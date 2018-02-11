@@ -12,8 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:foregroundTint="@color/cardview_light_background"
-        app:popupTheme="@style/AppThemeNoActionBar.PopupOverlay" />
+        android:theme="@style/ToolBarStyle"
+        android:backgroundTint="@color/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

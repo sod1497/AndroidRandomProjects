@@ -8,7 +8,7 @@ import java.util.List;
  * Created by sod14 on 30/01/2018.
  */
 
-public class ElementList<String> implements Serializable {
+public class ElementList<String> implements Serializable, Cloneable {
     private List<String> elements;
     private String description;
     private String name;
@@ -48,5 +48,20 @@ public class ElementList<String> implements Serializable {
 
     public void setColor(int color) {
         this.color = color;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        ElementList<String> res = new ElementList<>();
+        res.setName(this.getName());
+        res.setDescription(this.getDescription());
+        res.setColor(this.getColor());
+
+        for(String s : elements)
+        {
+            res.elements.add(s);
+        }
+
+        return res;
     }
 }

@@ -1,14 +1,21 @@
 package com.example.sod14.randompick.Logic;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 
 import java.io.Closeable;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,12 +120,55 @@ public class ElementListManager {
         }
         return result;
     }
-/*
-    public boolean importList() {
-        //Imports a list from a elementlist file
+
+    public boolean importList(File file) {
+        try{
+            fis = new FileInputStream(file);
+            ois = new ObjectInputStream(fis);
+            ElementList<String> o = (ElementList<String>) ois.readObject();
+            return saveList(o);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            closeResource(ois);
+            closeResource(fis);
+        }
 
     }
-*/
+
+    public boolean exportList(ElementList<String> list)
+    {
+        try{
+            //https://stackoverflow.com/questions/20202966/android-not-creating-file
+            File myFile = new File(Environment.getExternalStorageDirectory(), "RandomPickLists/"+list.getName());
+            if (!myFile.exists()) {
+                myFile.mkdirs();
+                myFile.createNewFile();
+            }
+
+            fos = new FileOutputStream(myFile);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(list);
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            closeResource(oos);
+            closeResource(fos);
+        }
+    }
+
     public static void closeResource(Closeable c) {
         try {
             if (c != null) c.close();

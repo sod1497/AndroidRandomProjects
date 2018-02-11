@@ -38,8 +38,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="Nuevo elemento"
-                android:inputType="text"
+                android:hint="@string/new_element"
+                android:inputType="textCapSentences"
                 app:layout_constraintEnd_toStartOf="@+id/button2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +52,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
                 android:onClick="addButtonClick"
-                android:text="Añadir"
+                android:text="@string/add"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

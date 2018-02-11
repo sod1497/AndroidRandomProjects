@@ -41,17 +41,21 @@ public class MainListItemsAdapter extends RecyclerView.Adapter {
         viewHolder.name.setText(item.getName());
         viewHolder.description.setText(item.getDescription());
         int aux = item.getElementCount();
+        String mystring;
         switch (aux){
             case 0:
-                viewHolder.num.setText(R.string.no_elements);
+                mystring = mainContext.getResources().getString(R.string.no_elements);
                 break;
             case 1:
-                viewHolder.num.setText(String.valueOf(aux)+" "+R.string.element);
+                mystring = mainContext.getResources().getString(R.string.element);
+                mystring = aux + " " + mystring;
                 break;
             default:
-                viewHolder.num.setText(String.valueOf(aux)+" "+R.string.elements);
+                mystring = mainContext.getResources().getString(R.string.elements);
+                mystring = aux + " " + mystring;
                 break;
         }
+        viewHolder.num.setText(mystring);
         viewHolder.colorBar.setBackgroundColor(item.getColor());
 
     }

@@ -1,29 +1,34 @@
 package com.example.sod14.randompick;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.sax.Element;
+import android.os.Environment;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.sod14.randompick.ListActivityElements.ElementListItem;
 import com.example.sod14.randompick.ListActivityElements.ElementListItemsAdapter;
 import com.example.sod14.randompick.Logic.ElementList;
 import com.example.sod14.randompick.Logic.ElementListManager;
-import com.example.sod14.randompick.MainActivityElements.MainListItem;
 import com.example.sod14.randompick.Persistence.ActiveData;
 
 import java.util.ArrayList;
@@ -40,6 +45,8 @@ public class ListActivity extends AppCompatActivity {
 
     private Button addButton;
     private EditText etElement;
+
+    static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +69,31 @@ public class ListActivity extends AppCompatActivity {
 
         manager = activeData.getManager();
 
+
+
         recyclerView = findViewById(R.id.recyclerViewList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         etElement = findViewById(R.id.etElement);
+
+        etElement.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            addButtonClick(etElement);
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
 
 
         String name = getIntent().getStringExtra("name");
@@ -77,11 +106,20 @@ public class ListActivity extends AppCompatActivity {
         }
         elementList = lists.get(a);
 
+        this.setTitle(elementList.getName());
+
         adapter = new ElementListItemsAdapter(elementList);
         recyclerView.setAdapter(adapter);
         elementListItem = new ArrayList<>();
 
         loadData();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+
     }
 
     private void loadData()
@@ -100,12 +138,12 @@ public class ListActivity extends AppCompatActivity {
 
     public void addButtonClick(View v)
     {
-        Snackbar snackbar = Snackbar.make(v,"Introduce texto primero", BaseTransientBottomBar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(v,R.string.add_some_text, BaseTransientBottomBar.LENGTH_SHORT);
         if(etElement.getText().toString().length()==0) snackbar.show();
         else{
             String element = etElement.getText().toString();
             elementList.getElements().add(element);
-            snackbar.setText(etElement.getText().toString()+" añadido");
+            snackbar.setText(etElement.getText().toString()+" "+getString(R.string.added));
             etElement.setText("");
             snackbar.show();
             manager.saveList(elementList);
@@ -129,6 +167,14 @@ public class ListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.detailsButton:
+                Intent intent = new Intent(this,AddListActivity.class);
+                intent.putExtra(Intent.EXTRA_TEXT,elementList.getName());
+                startActivity(intent);
+
+                //recibir el nombre de la nueva lista y actualizar los datos actuales
+
+                return true;
             case R.id.deleteList:
                 //Show confirmation dialog
                 // 1. Instantiate an AlertDialog.Builder with its constructor
@@ -156,7 +202,19 @@ public class ListActivity extends AppCompatActivity {
                 dialog.show();
 
                 return true;
+            case R.id.exportListButton:
+                if(isExternalStorageWritable())
+                {
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                    }
 
+                }
+                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -165,5 +223,36 @@ public class ListActivity extends AppCompatActivity {
         }
     }
 
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    manager.exportList(elementList);
+
+                } else {
+
+                    Toast.makeText(this, R.string.need_permission,Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
 }
