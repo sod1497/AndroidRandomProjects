@@ -56,7 +56,7 @@ public class MainListItemsAdapter extends RecyclerView.Adapter {
                 break;
         }
         viewHolder.num.setText(mystring);
-        viewHolder.colorBar.setBackgroundColor(item.getColor());
+        viewHolder.colorBar.setImageResource(item.getColor());
 
     }
 

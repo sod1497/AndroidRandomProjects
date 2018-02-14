@@ -26,37 +26,44 @@ import java.util.List;
 
 public class ListMenuActivity extends AppCompatActivity {
 
-
+    //Common app data
     private ActiveData activeData;
     private ElementListManager manager;
+
+    //UI elements
     private MainListItemsAdapter adapter;
     private List<MainListItem> mainListItems;
     private RecyclerView recyclerView;
+
+    //Request IDs
     private static final int FILE_SELECT_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //UI stuff
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_menu);
 
         //Add the toolbar always after the setcontentview method
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarListMenu);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        //Load app data
         activeData = ActiveData.getInstance();
         activeData.setMainActivity(this);
         manager = activeData.getManager();
+
+        //Prepare elements for the UI
         mainListItems = activeData.getMainListItems();
         adapter = activeData.getMainListItemsAdapter();
-
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
         loadData();
     }
 
+    //When coming back to the Activity from another one
     @Override
     protected void onResume() {
         super.onResume();
@@ -72,6 +79,7 @@ public class ListMenuActivity extends AppCompatActivity {
 
     }
 
+    //Loads UI data
     private void loadData() {
         mainListItems.clear();
         List<ElementList<String>> lists = this.manager.getLists();
@@ -83,10 +91,12 @@ public class ListMenuActivity extends AppCompatActivity {
         }
     }
 
-    public void AddListClic(View v) {
+    //Handler for list adding
+    public void AddListClick(View v) {
         startActivity(new Intent(this, AddListActivity.class));
     }
 
+    //Handler for the list elements
     public void ElementClick(String name) {
         List<ElementList<String>> lists = manager.getLists();
         int a = 0;
@@ -99,6 +109,7 @@ public class ListMenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //Adding menu options to the toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -106,6 +117,7 @@ public class ListMenuActivity extends AppCompatActivity {
         return true;
     }
 
+    //Handlers for the menu options
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -135,7 +147,6 @@ public class ListMenuActivity extends AppCompatActivity {
         return false;
     }
 
-
     /* Checks if external storage is available to at least read */
     public boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
@@ -146,6 +157,7 @@ public class ListMenuActivity extends AppCompatActivity {
         return false;
     }
 
+    //For importing, not working yet
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("text/plain");
@@ -161,6 +173,7 @@ public class ListMenuActivity extends AppCompatActivity {
         }
     }
 
+    //same
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {

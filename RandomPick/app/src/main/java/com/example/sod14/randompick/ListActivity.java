@@ -34,22 +34,36 @@ import com.example.sod14.randompick.Persistence.ActiveData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListActivity extends AppCompatActivity {
+/*
+This activity shows the name of the list, its elements and lets you add new elements through an
+EditText and an Accept button. Will only be called under existing lists.
 
-    private ElementList<String> elementList;
+ */
+public class ListActivity extends AppCompatActivity {
+    //Common app data
     private ActiveData activeData;
-    private ElementListItemsAdapter adapter;
-    private RecyclerView recyclerView;
-    private List<ElementListItem> elementListItem;
     private ElementListManager manager;
 
+    //List and its elements (and data adapters)
+    private ElementList<String> elementList;
+    private ElementListItemsAdapter adapter;
+    private List<ElementListItem> elementListItem;
+
+    //UI Components
     private Button addButton;
     private EditText etElement;
+    private RecyclerView recyclerView;
 
-    static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+    //Internal data to keep track of selected objects
+    private String listName;
+
+    //Request IDs for Result data on new Activities
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+    private static final int DETAILS_REQUEST = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //UI stuff
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
@@ -57,8 +71,6 @@ public class ListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,12 +81,11 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
+        //Load app data
         activeData = ActiveData.getInstance();
-
         manager = activeData.getManager();
 
-
-
+        //Setting UI to the data loaded
         recyclerView = findViewById(R.id.recyclerViewList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         etElement = findViewById(R.id.etElement);
@@ -99,33 +110,19 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-
-        String name = getIntent().getStringExtra("name");
-        List<ElementList<String>> lists = manager.getLists();
-        int a=0;
-        while(a<lists.size())
-        {
-            if(lists.get(a).getName().equals(name)) break;
-            a++;
-        }
-        elementList = lists.get(a);
-
-        this.setTitle(elementList.getName());
-
-        adapter = new ElementListItemsAdapter(elementList);
-        recyclerView.setAdapter(adapter);
-        elementListItem = new ArrayList<>();
-
+        //Load the list selected in the previous Activity
+        listName = getIntent().getStringExtra("name");
         loadData();
     }
 
+    //When coming back form another Activity we need to reload the data
     @Override
     protected void onPostResume() {
         super.onPostResume();
-
-
+        loadData();
     }
 
+    //
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -134,6 +131,22 @@ public class ListActivity extends AppCompatActivity {
 
     private void loadData()
     {
+        //Search for the list
+        List<ElementList<String>> lists = manager.getLists();
+        int a=0;
+        while(a<lists.size())
+        {
+            if(lists.get(a).getName().equals(listName)) break;
+            a++;
+        }
+        elementList = lists.get(a); //Found it!
+
+        //Update the UI to the list
+        this.setTitle(elementList.getName());
+
+        adapter = new ElementListItemsAdapter(elementList);
+        recyclerView.setAdapter(adapter);
+        elementListItem = new ArrayList<>();
 
         ElementListItem item;
         for(String e:elementList.getElements())
@@ -146,6 +159,7 @@ public class ListActivity extends AppCompatActivity {
         if(elementList.getElements().size()==0) etElement.requestFocus();
     }
 
+    //Adds an element to the list
     public void addButtonClick(View v)
     {
         Snackbar snackbar = Snackbar.make(v,R.string.add_some_text, BaseTransientBottomBar.LENGTH_SHORT);
@@ -161,12 +175,14 @@ public class ListActivity extends AppCompatActivity {
         }
     }
 
+    //Not working yet
     public void randomButtonClick(View v)
     {
         RandomActivity activity = new RandomActivity(elementList);
         startActivity(activity.getIntent());
     }
 
+    //Adding the menu to the toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -174,13 +190,14 @@ public class ListActivity extends AppCompatActivity {
         return true;
     }
 
+    //Handlers for the menu buttons
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.detailsButton:
                 Intent intent = new Intent(this,AddListActivity.class);
                 intent.putExtra(Intent.EXTRA_TEXT,elementList.getName());
-                startActivity(intent);
+                startActivityForResult(intent,DETAILS_REQUEST);
 
                 //recibir el nombre de la nueva lista y actualizar los datos actuales
 
@@ -242,7 +259,20 @@ public class ListActivity extends AppCompatActivity {
         return false;
     }
 
+    //When the list gets edited
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if(requestCode==DETAILS_REQUEST)
+        {
+            if(resultCode==RESULT_OK)
+            {
+                listName = data.getData().toString();
+            }
+        }
+    }
+
+    //Some permission stuff
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
