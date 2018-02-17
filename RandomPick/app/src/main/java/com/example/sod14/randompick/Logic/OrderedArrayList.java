@@ -71,6 +71,11 @@ public class OrderedArrayList<E extends Comparable> implements Iterable<E>,Seria
         return arrayList;
     }
 
+    public void clear()
+    {
+        arrayList.clear();
+    }
+
     @NonNull
     @Override
     public Iterator<E> iterator() {

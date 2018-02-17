@@ -85,6 +85,7 @@ public class ListActivity extends AppCompatActivity {
 
         //Load app data
         activeData = ActiveData.getInstance();
+        activeData.setListActivity(this);
         manager = activeData.getManager();
 
         //Setting UI to the data loaded
@@ -214,6 +215,7 @@ public class ListActivity extends AppCompatActivity {
     //Handlers for the menu buttons
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         switch (item.getItemId()) {
             case R.id.detailsButton:
                 Intent intent = new Intent(this,AddListActivity.class);
@@ -226,7 +228,6 @@ public class ListActivity extends AppCompatActivity {
             case R.id.deleteList:
                 //Show confirmation dialog
                 // 1. Instantiate an AlertDialog.Builder with its constructor
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
                 // 2. Chain together various setter methods to set the dialog characteristics
                 builder.setTitle(R.string.confirmation_dialog);
@@ -263,6 +264,29 @@ public class ListActivity extends AppCompatActivity {
 
                 }
                 return true;
+            case R.id.clearListMenuItem:
+                //Show confirmation dialog
+
+                // 2. Chain together various setter methods to set the dialog characteristics
+                builder.setTitle(R.string.confirmation_dialog);
+
+                // Add the buttons
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        elementList.getElements().clear();
+                        manager.saveList(elementList);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+                // 3. Get the AlertDialog from create()
+                AlertDialog dialogClear = builder.create();
+                dialogClear.show();
+                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -292,6 +316,13 @@ public class ListActivity extends AppCompatActivity {
             }
         }
     }
+
+    public ElementList<String> getElementList()
+    {
+        return elementList;
+    }
+
+
 
     //Some permission stuff
     @Override

@@ -100,5 +100,8 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="remove">Remove</string>
+    <string name="clear_list">Clear List</string>
+    <string name="merge_list">Merge list</string>
 
 </resources>

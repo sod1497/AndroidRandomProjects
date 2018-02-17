@@ -20,13 +20,13 @@
         android:singleLine="false"
         android:text="Name"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintEnd_toStartOf="@+id/itemListButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/itemListButton"
         style="@android:style/Widget.DeviceDefault.Light.Button.Borderless.Small"
         android:layout_width="28dp"
         android:layout_height="28dp"

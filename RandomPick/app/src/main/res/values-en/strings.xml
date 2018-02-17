@@ -27,4 +27,7 @@
     <string name="add_some_text">Add some text first</string>
     <string name="added">added</string>
     <string name="element_already_in_list">This element is already in this list</string>
+    <string name="remove">Remove</string>
+    <string name="clear_list">Clear List</string>
+    <string name="merge_list">Merge list</string>
 </resources>
