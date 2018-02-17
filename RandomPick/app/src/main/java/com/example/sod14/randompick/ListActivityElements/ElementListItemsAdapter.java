@@ -36,7 +36,7 @@ public class ElementListItemsAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        String item = items.getElements().get(position);
+        String item = (String) items.getElements().get(position);
         ElementListItemViewHolder viewHolder = (ElementListItemViewHolder) holder;
         viewHolder = new ElementListItemViewHolder(viewHolder.itemView);
         viewHolder.name.setText(item);

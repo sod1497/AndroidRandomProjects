@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.sod14.randompick.Logic.ElementList;
 import com.example.sod14.randompick.Logic.ElementListManager;
+import com.example.sod14.randompick.Logic.OrderedArrayList;
 import com.example.sod14.randompick.MainActivityElements.MainListItem;
 import com.example.sod14.randompick.MainActivityElements.MainListItemsAdapter;
 import com.example.sod14.randompick.Persistence.ActiveData;
@@ -82,7 +83,7 @@ public class ListMenuActivity extends AppCompatActivity {
     //Loads UI data
     private void loadData() {
         mainListItems.clear();
-        List<ElementList<String>> lists = this.manager.getLists();
+        OrderedArrayList<ElementList<String>> lists = this.manager.getLists();
         MainListItem item;
         for (ElementList<String> e : lists) {
             item = new MainListItem(e.getName(), e.getDescription(), e.getElements().size(), e.getColor());
@@ -98,7 +99,7 @@ public class ListMenuActivity extends AppCompatActivity {
 
     //Handler for the list elements
     public void ElementClick(String name) {
-        List<ElementList<String>> lists = manager.getLists();
+        OrderedArrayList<ElementList<String>> lists = manager.getLists();
         int a = 0;
         while (a < lists.size()) {
             if (lists.get(a).getName() == name) break;

@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 public class ElementListManager {
-    private List<ElementList<String>> lists;
+    private OrderedArrayList<ElementList<String>> lists;
     private Context context;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
@@ -37,7 +37,7 @@ public class ElementListManager {
 
         this.context = context;
         fis = null;
-        this.lists=new ArrayList<>();
+        this.lists=new OrderedArrayList<>();
 
         String[] files = context.fileList();
 
@@ -62,7 +62,7 @@ public class ElementListManager {
 
     }
 
-    public List<ElementList<String>> getLists() {
+    public OrderedArrayList<ElementList<String>> getLists() {
         return lists;
     }
 

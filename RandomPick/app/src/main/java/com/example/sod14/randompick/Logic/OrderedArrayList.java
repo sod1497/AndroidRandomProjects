@@ -12,14 +12,14 @@ import java.util.Iterator;
  * Created by sod14 on 16/02/2018.
  */
 
-public class OrderedArrayList implements Iterable<String>,Serializable{
-    ArrayList<java.lang.String> arrayList;
+public class OrderedArrayList<E extends Comparable> implements Iterable<E>,Serializable{
+    ArrayList<E> arrayList;
 
     public OrderedArrayList() {
         arrayList=new ArrayList<>();
     }
 
-    public int add(java.lang.String element)
+    public int add(E element)
     {
         if(arrayList.contains(element))
         {
@@ -34,25 +34,19 @@ public class OrderedArrayList implements Iterable<String>,Serializable{
         }
     }
 
-    public boolean contains(String element)
+    public boolean contains(E element)
     {
         return arrayList.contains(element);
     }
 
-    public String get(int index)
+    public E get(int index)
     {
         return arrayList.get(index);
     }
 
-    public int indexOf(String element)
+    public int indexOf(E element)
     {
         return arrayList.indexOf(element);
-    }
-
-    @NonNull
-    @Override
-    public Iterator<String> iterator() {
-        return arrayList.iterator();
     }
 
     public int size()
@@ -60,16 +54,26 @@ public class OrderedArrayList implements Iterable<String>,Serializable{
         return arrayList.size();
     }
 
-    public void addAll(Collection<String> collection)
+    public boolean remove(E element)
     {
-        for(String s : collection)
+        return arrayList.remove(element);
+    }
+
+    public void addAll(Collection<E> collection)
+    {
+        for(E s : collection)
         {
             this.add(s);
         }
     }
 
-    public ArrayList<String> getArrayList()
-    {
+    public ArrayList<E> getArrayList() {
         return arrayList;
+    }
+
+    @NonNull
+    @Override
+    public Iterator<E> iterator() {
+        return arrayList.iterator();
     }
 }

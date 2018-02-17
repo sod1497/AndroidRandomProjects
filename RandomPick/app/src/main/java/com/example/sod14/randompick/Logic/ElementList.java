@@ -1,16 +1,14 @@
 package com.example.sod14.randompick.Logic;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * Created by sod14 on 30/01/2018.
  */
 
-public class ElementList<String> implements Serializable, Cloneable {
+public class ElementList<String> implements Serializable, Cloneable,Comparable {
     private OrderedArrayList elements;
     private String description;
     private String name;
@@ -60,5 +58,10 @@ public class ElementList<String> implements Serializable, Cloneable {
         res.setColor(this.getColor());
         res.getElements().addAll(this.getElements().getArrayList());
         return res;
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return this.getName().toString().compareTo(((ElementList<String>)o).getName().toString());
     }
 }

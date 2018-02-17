@@ -35,6 +35,6 @@ public class RandomActivity extends AppCompatActivity {
 
     private void newRandom()
     {
-        textView.setText(elementList.getElements().get(random.nextInt(elementList.getElements().size())));
+        textView.setText((String) elementList.getElements().get(random.nextInt(elementList.getElements().size())));
     }
 }

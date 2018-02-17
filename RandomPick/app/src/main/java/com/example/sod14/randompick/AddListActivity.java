@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.example.sod14.randompick.Logic.ElementList;
 import com.example.sod14.randompick.Logic.ElementListManager;
+import com.example.sod14.randompick.Logic.OrderedArrayList;
 import com.example.sod14.randompick.Persistence.ActiveData;
 
 import java.util.List;
@@ -87,7 +88,7 @@ public class AddListActivity extends AppCompatActivity {
         if (getIntent().hasExtra(Intent.EXTRA_TEXT)) {
             //Searching for the selected list
             String elementListName = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-            List<ElementList<String>> lists = manager.getLists();
+            OrderedArrayList<ElementList<String>> lists = manager.getLists();
             int a = 0;
             while (a < lists.size()) {
                 if (lists.get(a).getName().equals(elementListName)) break;

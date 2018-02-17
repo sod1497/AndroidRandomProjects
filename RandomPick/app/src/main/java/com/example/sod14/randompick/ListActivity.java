@@ -29,9 +29,11 @@ import com.example.sod14.randompick.ListActivityElements.ElementListItem;
 import com.example.sod14.randompick.ListActivityElements.ElementListItemsAdapter;
 import com.example.sod14.randompick.Logic.ElementList;
 import com.example.sod14.randompick.Logic.ElementListManager;
+import com.example.sod14.randompick.Logic.OrderedArrayList;
 import com.example.sod14.randompick.Persistence.ActiveData;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /*
@@ -139,7 +141,7 @@ public class ListActivity extends AppCompatActivity {
     private void loadData()
     {
         //Search for the list
-        List<ElementList<String>> lists = manager.getLists();
+        OrderedArrayList<ElementList<String>> lists = manager.getLists();
         int a=0;
         while(a<lists.size())
         {
@@ -156,9 +158,9 @@ public class ListActivity extends AppCompatActivity {
         elementListItem = new ArrayList<>();
 
         ElementListItem item;
-        for(String e:elementList.getElements())
+        for(Object e:elementList.getElements())
         {
-            item = new ElementListItem(e);
+            item = new ElementListItem((String) e);
             elementListItem.add(item);
             adapter.notifyItemInserted(elementListItem.indexOf(item));
         }
