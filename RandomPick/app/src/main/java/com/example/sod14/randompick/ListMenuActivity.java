@@ -129,6 +129,8 @@ public class ListMenuActivity extends AppCompatActivity {
                 }
 
                 return true;
+            case R.id.settings:
+                startActivity(new Intent(this,SettingsActivity.class));
 
             default:
                 // If we got here, the user's action was not recognized.

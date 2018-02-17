@@ -58,6 +58,9 @@ public class AddListActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         bAccept = findViewById(R.id.bAdd);
 
+        imageView.setImageResource(R.color.theme5);
+        selectedColor=R.color.theme5;
+
         b1 = findViewById(R.id.bColor1);
         b2 = findViewById(R.id.bColor2);
         b3 = findViewById(R.id.bColor3);

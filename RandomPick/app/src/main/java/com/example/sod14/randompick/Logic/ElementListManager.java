@@ -71,7 +71,7 @@ public class ElementListManager {
         String [] files = context.fileList();
         boolean found = false;
         for (String s : files) {
-            if(s == list.getName())
+            if(s.equals(list.getName()))
             {
                 found=true;
                 break;

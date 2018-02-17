@@ -3,26 +3,28 @@ package com.example.sod14.randompick.Logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by sod14 on 30/01/2018.
  */
 
 public class ElementList<String> implements Serializable, Cloneable {
-    private List<String> elements;
+    private OrderedArrayList elements;
     private String description;
     private String name;
     private int color;
 
     public ElementList() {
-        elements = new ArrayList<>();
+        elements = new OrderedArrayList();
     }
 
-    public List<String> getElements() {
+    public OrderedArrayList getElements() {
         return elements;
     }
 
-    public void setElements(List<String> elements) {
+    public void setElements(OrderedArrayList elements) {
         this.elements = elements;
     }
 
@@ -56,12 +58,7 @@ public class ElementList<String> implements Serializable, Cloneable {
         res.setName(this.getName());
         res.setDescription(this.getDescription());
         res.setColor(this.getColor());
-
-        for(String s : elements)
-        {
-            res.elements.add(s);
-        }
-
+        res.getElements().addAll(this.getElements().getArrayList());
         return res;
     }
 }

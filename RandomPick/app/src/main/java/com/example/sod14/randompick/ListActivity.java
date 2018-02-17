@@ -110,6 +110,13 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
+        //Makes the EditText not lose focus when adding a new element to a RecyclerView
+        //Not suitable for using keyboard to navigate
+        etElement.setNextFocusDownId(etElement.getId());
+        etElement.setNextFocusUpId(etElement.getId());
+        etElement.setNextFocusLeftId(etElement.getId());
+        etElement.setNextFocusRightId(etElement.getId());
+
         //Load the list selected in the previous Activity
         listName = getIntent().getStringExtra("name");
         loadData();
@@ -164,15 +171,27 @@ public class ListActivity extends AppCompatActivity {
     {
         Snackbar snackbar = Snackbar.make(v,R.string.add_some_text, BaseTransientBottomBar.LENGTH_SHORT);
         if(etElement.getText().toString().length()==0) snackbar.show();
+        else if(elementList.getElements().contains(etElement.getText().toString()))
+        {
+            snackbar.setText(R.string.element_already_in_list);
+            snackbar.show();
+        }
         else{
+            //Add the element
             String element = etElement.getText().toString();
             elementList.getElements().add(element);
+            manager.saveList(elementList);
+
+            //Get the index to update the recyclerview
+            int index = elementList.getElements().indexOf(element);
+            adapter.notifyItemInserted(index);
+
+            //UI feedback to the user
             snackbar.setText(etElement.getText().toString()+" "+getString(R.string.added));
             etElement.setText("");
             snackbar.show();
-            manager.saveList(elementList);
-            adapter.notifyItemInserted(elementList.getElements().indexOf(element));
         }
+
     }
 
     //Not working yet
