@@ -3,6 +3,7 @@ package com.example.sod14.randompick.Logic;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 
@@ -12,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URI;
@@ -91,6 +93,11 @@ public class ElementListManager {
             fos = context.openFileOutput(list.getName(),Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(list);
+            if(!this.lists.contains(list))
+            {
+                //Because i just imported it
+                this.lists.add(list);
+            }
             return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -121,11 +128,11 @@ public class ElementListManager {
         return result;
     }
 
-    public boolean importList(File file) {
+    public boolean importList(InputStream inputStream) {
         try{
-            fis = new FileInputStream(file);
-            ois = new ObjectInputStream(fis);
+            ois = new ObjectInputStream(inputStream);
             ElementList<String> o = (ElementList<String>) ois.readObject();
+            //Here it should show a message asking if you want to override an existing list
             return saveList(o);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -138,18 +145,21 @@ public class ElementListManager {
             return false;
         } finally {
             closeResource(ois);
-            closeResource(fis);
         }
 
     }
 
-    public boolean exportList(ElementList<String> list)
+    public boolean exportList(ElementList<String> list) throws IOException
     {
         try{
             //https://stackoverflow.com/questions/20202966/android-not-creating-file
-            File myFile = new File(Environment.getExternalStorageDirectory(), "RandomPickLists/"+list.getName());
+            File directory = new File(Environment.getExternalStorageDirectory(),"RandomPickLists");
+            if(!directory.exists())
+            {
+                directory.mkdirs();
+            }
+            File myFile = new File(Environment.getExternalStorageDirectory()+ "/RandomPickLists",list.getName());
             if (!myFile.exists()) {
-                myFile.mkdirs();
                 myFile.createNewFile();
             }
 
@@ -160,9 +170,7 @@ public class ElementListManager {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+
         } finally {
             closeResource(oos);
             closeResource(fos);

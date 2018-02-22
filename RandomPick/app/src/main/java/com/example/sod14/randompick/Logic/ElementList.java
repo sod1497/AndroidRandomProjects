@@ -64,4 +64,9 @@ public class ElementList<String> implements Serializable, Cloneable,Comparable {
     public int compareTo(@NonNull Object o) {
         return this.getName().toString().compareTo(((ElementList<String>)o).getName().toString());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.getName().equals(((ElementList<String>)obj).getName());
+    }
 }

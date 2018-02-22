@@ -30,4 +30,5 @@
     <string name="remove">Remove</string>
     <string name="clear_list">Clear List</string>
     <string name="merge_list">Merge list</string>
+    <string name="selectLists">Select lists</string>
 </resources>

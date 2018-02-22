@@ -152,15 +152,16 @@ public class AddListActivity extends AppCompatActivity {
                 newElement.setDescription(etDescription.getText().toString());
                 newElement.setColor(selectedColor);
 
+                //If name changed it adds a new list and removes the old one, else it saves changes
                 if (!manager.addList(newElement)) {
-                    nameNotValidSnackbar.show();
+                    manager.saveList(newElement);
                 } else {
                     manager.deleteList(elementList);
-                    Intent result = new Intent();
-                    result.setData(Uri.parse(newElement.getName()));
-                    setResult(RESULT_OK,result);
-                    finish();
                 }
+                Intent result = new Intent();
+                result.setData(Uri.parse(newElement.getName()));
+                setResult(RESULT_OK,result);
+                finish();
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }

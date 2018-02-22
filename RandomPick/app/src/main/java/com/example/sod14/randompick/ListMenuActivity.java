@@ -1,6 +1,7 @@
 package com.example.sod14.randompick;
 
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.example.sod14.randompick.MainActivityElements.MainListItemsAdapter;
 import com.example.sod14.randompick.Persistence.ActiveData;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class ListMenuActivity extends AppCompatActivity {
@@ -126,7 +128,6 @@ public class ListMenuActivity extends AppCompatActivity {
 
                 if (isExternalStorageReadable()) {
                     showFileChooser();
-
                 }
 
                 return true;
@@ -163,7 +164,7 @@ public class ListMenuActivity extends AppCompatActivity {
     //For importing, not working yet
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("text/plain");
+        intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
         try {
@@ -182,12 +183,15 @@ public class ListMenuActivity extends AppCompatActivity {
         switch (requestCode) {
             case FILE_SELECT_CODE:
                 if (resultCode == RESULT_OK) {
-
                     // Get the Uri of the selected file
                     Uri uri = data.getData();
-                    manager.importList(new File(uri.getPath()));
-
-                    loadData();
+                    try {
+                        manager.importList(getContentResolver().openInputStream(uri));
+                        loadData();
+                    }catch (FileNotFoundException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
         }
     }
