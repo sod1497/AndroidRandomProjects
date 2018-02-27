@@ -25,4 +25,7 @@
     <string name="add_some_text">Introduce texto primero</string>
     <string name="add">Añadir</string>
     <string name="new_element">Nuevo elemento</string>
+    <string name="title_activity_settings">Configuración</string>
+    <string name="element_already_in_list">Este elemento ya pertenece a esta lista</string>
+    <string name="added">añadido</string>
 </resources>

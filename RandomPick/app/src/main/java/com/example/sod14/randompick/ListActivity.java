@@ -1,6 +1,7 @@
 package com.example.sod14.randompick;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,6 +40,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 /*
 This activity shows the name of the list, its elements and lets you add new elements through an
@@ -59,6 +61,7 @@ public class ListActivity extends AppCompatActivity {
     private Button addButton;
     private EditText etElement;
     private RecyclerView recyclerView;
+    private FloatingActionButton fab;
 
     //Internal data to keep track of selected objects
     private String listName;
@@ -78,12 +81,11 @@ public class ListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                randomButtonClick(view);
             }
         });
 
@@ -191,10 +193,15 @@ public class ListActivity extends AppCompatActivity {
 
     }
 
-    //Not working yet
+    //Starts the RandomActivity with this list
     public void randomButtonClick(View v) {
-        RandomActivity activity = new RandomActivity(elementList);
-        startActivity(activity.getIntent());
+        //Here i add the transition for the FAB (floating action button) https://www.youtube.com/watch?v=4L4fLrWDvAU
+        Intent intent = new Intent(this,RandomActivity.class);
+        intent.putExtra("elementList",elementList.getName());
+        getWindow().setExitTransition(null);
+        intent.setAction(Intent.ACTION_VIEW);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
+                this,fab,"randomFabTarget").toBundle());
     }
 
     //Adding the menu to the toolbar
@@ -256,6 +263,7 @@ public class ListActivity extends AppCompatActivity {
 
                     try {
                         manager.exportList(elementList);
+                        Toast.makeText(this, R.string.export_completed, Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         //Toast.makeText(this, R.string.need_permission, Toast.LENGTH_LONG).show();
                     }
