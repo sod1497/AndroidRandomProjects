@@ -105,5 +105,10 @@
     <string name="merge_list">Merge list</string>
     <string name="selectLists">Select lists</string>
     <string name="export_completed">List exported</string>
+    <string name="add_some_elements">Add some elements first</string>
+    <string name="export_as_file">Export as list file</string>
+    <string name="export_as_text">Export as text file</string>
+    <string name="add_elements">Add elements</string>
+    <string name="add_form_text_file">Add from text file</string>
 
 </resources>

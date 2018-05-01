@@ -195,13 +195,19 @@ public class ListActivity extends AppCompatActivity {
 
     //Starts the RandomActivity with this list
     public void randomButtonClick(View v) {
-        //Here i add the transition for the FAB (floating action button) https://www.youtube.com/watch?v=4L4fLrWDvAU
-        Intent intent = new Intent(this,RandomActivity.class);
-        intent.putExtra("elementList",elementList.getName());
-        getWindow().setExitTransition(null);
-        intent.setAction(Intent.ACTION_VIEW);
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
-                this,fab,"randomFabTarget").toBundle());
+        if(elementList.getElements().size()==0)
+        {
+            Snackbar.make(v,R.string.add_some_elements,Snackbar.LENGTH_LONG).show();
+        }
+        else {
+            //Here i add the transition for the FAB (floating action button) https://www.youtube.com/watch?v=4L4fLrWDvAU
+            Intent intent = new Intent(this, RandomActivity.class);
+            intent.putExtra("elementList", elementList.getName());
+            getWindow().setExitTransition(null);
+            intent.setAction(Intent.ACTION_VIEW);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(
+                    this, fab, "randomFabTarget").toBundle());
+        }
     }
 
     //Adding the menu to the toolbar
